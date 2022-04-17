@@ -8,11 +8,10 @@ package ru.safenreiter.lab1.statistic
 object StatisticMap : HashMap<String, Int>() {
 
     override fun toString(): String {
-        StringBuilder().let {
-            forEach { (key, value) ->
-                it.append("$key:$value \n")
+        return buildString {
+            StatisticMap.forEach { (key, value) ->
+                append("$key:$value \n")
             }
-            return it.toString()
         }
     }
 }

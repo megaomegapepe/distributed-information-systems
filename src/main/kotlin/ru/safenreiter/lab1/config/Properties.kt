@@ -23,4 +23,14 @@ object Properties {
      * Должен лежать в папке /src/main/resources.
      */
     const val FILE_NAME = "RU-NVS.osm"
+
+    /**
+     * Количество соединений к бд.
+     */
+    const val CONNECTION_POOL_SIZE = 20
+
+    /**
+     * Количество записей для исполнения BATCH операции
+     */
+    const val BATCH_SIZE = 20
 }

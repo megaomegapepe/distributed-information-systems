@@ -6,11 +6,12 @@ import ru.safenreiter.lab1.config.Properties
 import ru.safenreiter.lab1.service.ConnectionPool
 
 object NodeDAO {
+    private var counter = 0
+    private val connection = ConnectionPool.getConnection()
 
     fun insertNode(node: Node) {
-        var counter = 0
-        ConnectionPool
-            .getConnection()
+        connection
+            .apply { autoCommit = false }
             .prepareStatement("INSERT INTO node (id, lat, lon, username, uid, version, changeset, date_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
             .apply {
                 setLong(1, node.id.toLong())
@@ -26,13 +27,18 @@ object NodeDAO {
                 if (counter < Properties.BATCH_SIZE) {
                     preparedStatement.addBatch()
                     counter++
+                    connection.commit()
                 } else {
-                    preparedStatement.executeBatch()
+                    preparedStatement.executeLargeUpdate()
                     counter = 0
+                    connection.commit()
                 }
             }
 
 
     }
 
+    fun closeConnection() {
+        this.connection.close()
+    }
 }

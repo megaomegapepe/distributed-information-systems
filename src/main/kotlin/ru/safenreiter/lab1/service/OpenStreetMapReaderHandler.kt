@@ -4,6 +4,7 @@ import java.io.InputStream
 import javax.xml.stream.XMLEventReader
 import ru.safenreiter.lab1.Node
 import ru.safenreiter.lab1.config.Properties.COUNT_NODES_FOR_READ
+import ru.safenreiter.lab1.dao.NodeDAO
 import ru.safenreiter.lab1.extensions.event.collectStatistic
 import ru.safenreiter.lab1.statistic.StatisticMap
 
@@ -31,5 +32,6 @@ object OpenStreetMapReaderHandler {
     fun processTheInputStream(inputStream: InputStream) {
         val partialUnmarshallerService = PartialUnmarshallerService(Node::class.java, inputStream)
         DataInserterService.insertDataFromIterable(partialUnmarshallerService)
+        NodeDAO.closeConnection()
     }
 }
